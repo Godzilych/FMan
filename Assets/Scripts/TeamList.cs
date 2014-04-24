@@ -6,7 +6,7 @@ public class TeamList : MonoBehaviour
 {
 	public GameObject FootballerPrefab;
 	public int TeamSize;
-	public List<Footballer> Team = new List<Footballer>();
+//	public List<Footballer> Team = new List<Footballer>();
 
 
 
@@ -22,7 +22,7 @@ public class TeamList : MonoBehaviour
 	{
 		for(int i=0; i < TeamSize; i++)
 		{
-			Team.Add( new Footballer(NameGenerator(), Random.Range (0,200)));
+			//Team.Add( new Footballer(NameGenerator(), Random.Range (0,200)));
 			Debug.Log ("qq");
 		}
 	}

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerMarker : MonoBehaviour
@@ -7,20 +7,27 @@ public class PlayerMarker : MonoBehaviour
 	public GameObject PickedObj;
 	public FPlayer LinkedPlayer;
 	public GameObject LastZone;
+	public GameObject Field;
+	public bool Lighted=false;
 
 	
-	//void OnMouseDown()
-	//{
-	//	Debug.Log("Clicked");
-	//	JerseyCur.GetComponent<Jersey> ().JerseyUpdate ("Колян", "00");
-	//}
+	void OnMouseDown()
+	{
+		SlotHighlight();
+		//JerseyCur.GetComponent<Jersey> ().JerseyUpdate ("Колян", "00");
+	}
+
+
+	void SlotHighlight()
+	{
+		foreach (FieldSlot Slot in Field.GetComponent<SlotManager>().AvailableFieldSlots)
+		{
+			Slot.VisibilitySwitch();
+		}
+	}
 
 	void OnMouseDrag()
 	{
-		//подсветка слотов
-		//перемещение объекта за мышкой
-
-		gameObject.layer = 2;
 		gameObject.transform.position = new Vector3(Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y, 0);
 	}
 
@@ -40,6 +47,7 @@ public class PlayerMarker : MonoBehaviour
 	void OnMouseUp()
 	{
 		Debug.Log ("Mouse Up");
+		SlotHighlight ();
 		ColliderSwitch ();
 		Ray DropRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit Hit;

@@ -57,7 +57,6 @@ build/
 *_i.c
 *_p.c
 *.ilk
-*.meta
 *.obj
 *.pch
 *.pdb
@@ -213,3 +212,43 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#############
+# Unity 3d
+#############
+Library/cache
+Library/metadata
+Library/previews
+
+Library\cache
+Library\metadata
+Library\previews
+
+Library/cache/
+Library/metadata/
+Library/previews/
+Temp/
+
+Library\cache\
+Library\metadata\
+Library\previews\
+Temp\
+
+*.csproj
+*.sln
+StickyFinger.sln
+StickyFinger-csharp.sln
+*.csproj
+Library/ScriptAssemblies/Assembly-CSharp.dll
+Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
+Library/ScriptMapper
+Library/assetDatabase3
+Library/guidmapper
+Library/expandedItems
+Library/assetDatabase3
+Assembly-CSharp-vs.csproj
+Assembly-CSharp.csproj
+Library/EditorUserBuildSettings.asset
+Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+Library/ScriptAssemblies/Assembly-CSharp-Editor.dll.mdb
+Library/CurrentLayout.dwlt

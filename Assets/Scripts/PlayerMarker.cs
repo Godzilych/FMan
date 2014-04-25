@@ -11,10 +11,10 @@ public class PlayerMarker : MonoBehaviour
 	public bool Lighted=false;
 
 	
+	//Highlight available slots on field
 	void OnMouseDown()
 	{
 		SlotHighlight();
-		//JerseyCur.GetComponent<Jersey> ().JerseyUpdate ("Колян", "00");
 	}
 
 
@@ -38,10 +38,13 @@ public class PlayerMarker : MonoBehaviour
 			Box.enabled=!Box.enabled;
 		}
 	}
-
-	public void GetDropZone( GameObject p)
+		
+	public RaycastHit GetTarget()
 	{
-
+		Ray DropRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit Hit;
+		Physics.Raycast (DropRay, out Hit);
+		return Hit;
 	}
 
 	void OnMouseUp()
@@ -49,10 +52,40 @@ public class PlayerMarker : MonoBehaviour
 		Debug.Log ("Mouse Up");
 		SlotHighlight ();
 		ColliderSwitch ();
+		/*
 		Ray DropRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit Hit;
 		Debug.DrawRay (DropRay.origin, DropRay.direction*10, Color.green, 5);
+		*/
+		GameObject Target = GetTarget ().collider.gameObject;
 
+		switch (Target.tag) 
+		{
+		case "FieldZone":
+			if(Target.transform==this.transform.parent)
+			{
+				RevertMovement (this);
+			}
+			//Move marker or revert movement
+			break;
+		case "PlayerMarker":
+			//Swap linked players, revert movement
+			Swap (Target.GetComponent<PlayerMarker> ());
+
+			break;
+		case "TeamRoster":
+			//Link player to marker of switch two linked players
+			Apply (this, Target.GetComponent<FPlayer>());
+
+			break;
+		default:
+			//revert movement
+			break;
+		}
+	
+		ColliderSwitch ();
+
+		/*
 		if (Physics.Raycast (DropRay.origin,DropRay.direction*10, out Hit ))
 		{
 			if(Hit.collider.gameObject.tag =="FieldZone")
@@ -78,7 +111,7 @@ public class PlayerMarker : MonoBehaviour
 			Debug.Log("Missed Ray");
 			ColliderSwitch();
 			//revert
-		}
+		}*/
 	}
 
 	public void Apply( PlayerMarker m, FPlayer p)
@@ -101,6 +134,7 @@ public class PlayerMarker : MonoBehaviour
 	public void RevertMovement( PlayerMarker p)
 	{
 		//place marker on last fitted position
+		p.transform.position = p.transform.parent.position;
 	}
 
 	public void Move()

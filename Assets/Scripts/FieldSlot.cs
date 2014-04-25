@@ -3,6 +3,12 @@ using System.Collections;
 
 public class FieldSlot : MonoBehaviour 
 {
+	public bool IsAvailable;
+
+	public void AviailabilytySwitch()
+	{
+		IsAvailable = !IsAvailable;
+	}
 
 	public void VisibilitySwitch()
 	{

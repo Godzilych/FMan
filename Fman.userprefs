@@ -1,14 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SlotManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FieldSlot.cs">
     <Files>
-      <File FileName="Assets\Scripts\Jersey.cs" Line="15" Column="1" />
-      <File FileName="Assets\Scripts\FPlayer.cs" Line="22" Column="1" />
-      <File FileName="Assets\Scripts\PlayerMarker.cs" Line="31" Column="1" />
-      <File FileName="Assets\Scripts\TeamRoster.cs" Line="30" Column="1" />
-      <File FileName="Assets\Scripts\TeamSetup.cs" Line="23" Column="2" />
-      <File FileName="Assets\Scripts\FieldSlot.cs" Line="6" Column="1" />
-      <File FileName="Assets\SlotManager.cs" Line="21" Column="3" />
+      <File FileName="Assets\Scripts\FieldSlot.cs" Line="20" Column="2" />
+      <File FileName="Assets\Scripts\FieldZone.cs" Line="31" Column="13" />
+      <File FileName="Assets\Scripts\PlayerMarker.cs" Line="69" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

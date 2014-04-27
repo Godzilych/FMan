@@ -1,17 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class FieldZone : MonoBehaviour 
 {
-	public FieldSlot LeftSlot;
-	public FieldSlot MidSlot;
-	public FieldSlot RightSlot;
-
-	public int SlotsCount;
-	//List<FieldSlot> Slots = new List<FieldSlot>();
 	public Zones ZoneType;
-	public int FreeSlots = 0;
 	public List<FieldSlot> mySlots = new List<FieldSlot>();
 	public List<PlayerMarker> myMarkers = new List<PlayerMarker>();
 
@@ -23,9 +16,16 @@ public class FieldZone : MonoBehaviour
 			mySlots.Add (f);
 		}
 	}
+
 	//Adds marker to zone if possible, else return it back
 	public void AttachMarker(PlayerMarker p)
 	{
+		if(this==p.myZone)
+		{
+			Revert (p);
+			return;
+		}
+
 		int OpenSlots = mySlots.Count - myMarkers.Count;
 
 		switch (OpenSlots)
@@ -33,30 +33,47 @@ public class FieldZone : MonoBehaviour
 		case 0:
 			//no slots, revert
 			Revert (p);
+			Debug.Log ("no slots");
 			break;
-		case 1|3:
+		case 1:
 			//go mid
+			DetachMarker(p);
+			Move(p, SlotType.M);
+			myMarkers.Add (p);
+			break;
+		case 3:
+			//go mid
+			DetachMarker(p);
 			Move(p, SlotType.M);
 			myMarkers.Add (p);
 			break;
 		case 2:
 			//go left, mid goes right
+			DetachMarker(p);
 			Move (p, SlotType.L);
 			myMarkers.Add (p);
 			Move (myMarkers[0], SlotType.R);
-
 			break;
 		}
 	}
 
 	public void DetachMarker(PlayerMarker p)
 	{
+		//no detach on first attach
+		if(p.myZone == null)
+		{
+			return;
+		}
+
 		int Slots = p.myZone.mySlots.Count;
 		int Markers = p.myZone.myMarkers.Count;
 		int OpenSlots = Slots - Markers;
 
+		Debug.Log (OpenSlots); 
+
 		if (OpenSlots==0 && Slots==1)
 		{
+			//
 			p.myZone.myMarkers.Remove(p);
 			return;
 		}
@@ -65,15 +82,68 @@ public class FieldZone : MonoBehaviour
 		{
 		case 2:
 			//return, only one slot occupied
+			p.myZone.myMarkers.Remove(p);
 			return;
 		case 1:
-			//go mid
-
+			//
+			foreach(PlayerMarker pp in p.myZone.myMarkers.ToArray())
+			{
+				if(pp!=p)
+				{
+					Debug.Log ("move to mid");
+					FixPositions (pp,SlotType.M);
+					p.myZone.myMarkers.Remove(p);
+					return;
+				}
+			}
 			break;
 		case 0:
 			//if mid - ok, left: mid go right, right: mid gp left
-
+			switch(p.mySlot.Type)
+			{
+			case SlotType.M:
+				// mid, ok, remove
+				p.myZone.myMarkers.Remove(p);
+				break;
+			case SlotType.L:
+				//left, mid go right
+				foreach(PlayerMarker pp in p.myZone.myMarkers.ToArray())
+				{
+					if(pp.mySlot.Type==SlotType.M)
+					{
+						FixPositions(pp, SlotType.L);
+						p.myZone.myMarkers.Remove(p);
+						return;
+					}
+				}
+				break;
+			case SlotType.R:
+				//right, mid goes left
+				foreach(PlayerMarker pp in p.myZone.myMarkers.ToArray())
+				{
+					if(pp.mySlot.Type==SlotType.M)
+					{
+						FixPositions (pp, SlotType.R);
+						p.myZone.myMarkers.Remove(p);
+						return;
+					}
+				}
+				break;
+			}
 			break;
+		}
+	}
+
+	//set correct position for markers in left zone
+	void FixPositions(PlayerMarker o, SlotType s)
+	{
+		foreach(FieldSlot f in o.myZone.mySlots)
+		{
+			if(f.Type==s)
+			{
+				o.transform.position=f.transform.position;
+				break;
+			}
 		}
 	}
 
@@ -87,6 +157,7 @@ public class FieldZone : MonoBehaviour
 			if(f.Type==s)
 			{
 				t=f;
+				p.myZone=this;
 				p.mySlot=t;
 				p.transform.position=t.transform.position;
 				break;
@@ -97,96 +168,7 @@ public class FieldZone : MonoBehaviour
 	//revert marker drag
 	void Revert(PlayerMarker p)
 	{
-		p.transform.position = p.LastPosition.position;
+		Debug.Log ("go back");
+		p.transform.position = p.LastPosition;
 	}
-
-	/*
-	public void Attach(PlayerMarker p)
-	{
-
-
-		foreach(FieldSlot f in Slots)
-		{
-			FreeSlots = f.Available == true ? FreeSlots++ : FreeSlots;
-		}
-
-		switch (FreeSlots)
-		{
-		case 1 | 3:
-
-			p.
-
-			Slots[M].Available=false;
-			p.transform.position = Slots[M].transform.position;
-			
-			break;
-		case 2:
-
-			Transform n = MidSlot.GetComponentInChildren<PlayerMarker>().transform;
-			n.position = n.transform.parent.position;
-			
-			p.transform.position = p.transform.parent.position;
-			
-			break;
-		case 0:
-			
-			p.RevertMovement(p);
-			
-			break;
-		}
-	}
-	*/
-/*
-	void Detach(PlayerMarker p)
-	{
-		SlotType TempSlot;
-
-		p.mySlot.Available=true;
-
-		switch (p.myZone.FreeSlots)
-		{
-		case 1:
-			//2 or 0 markers left
-
-
-			break;
-		case 2:
-			//get last ont and set it to M
-			break;
-		default:
-			//3 free slots, noting to do 
-			break;
-		}
-
-		
-
-	}
-	/*
-	void Attach(PlayerMarker p)
-	{
-		switch(SlotsCount)
-		{
-		case 1 | 3:
-			p.transform.parent = MidSlot.transform;
-			p.transform.position = p.transform.parent.position;
-
-			break;
-		case 2:
-			Transform n = MidSlot.GetComponentInChildren<PlayerMarker>().transform;
-
-			n.parent = LeftSlot.transform;
-			n.position = n.transform.parent.position;
-
-			p.transform.parent = RightSlot.transform;
-			p.transform.position = p.transform.parent.position;
-
-			break;
-		case 0:
-
-			p.RevertMovement(p);
-
-			break;
-		}
-	}	
-*/
 }

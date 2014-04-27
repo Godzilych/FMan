@@ -5,13 +5,12 @@ using System.Collections.Generic;
 public class PlayerMarker : MonoBehaviour
 {
 	public GameObject JerseyCur;
-	public GameObject LastZone;
 	public SlotManager Field;
 
 	public FPlayer LinkedPlayer;
 	public FieldZone myZone;
 	public FieldSlot mySlot;
-	public Transform LastPosition;
+	public Vector3 LastPosition = new Vector3();
 
 	private List<Collider> myColliders = new List<Collider>();
 
@@ -28,7 +27,7 @@ public class PlayerMarker : MonoBehaviour
 	void OnMouseDown()
 	{
 		SlotHighlight();
-		LastPosition = transform;
+		LastPosition = transform.position;
 	}
 
 	//Switch visibility state of field slots
@@ -79,10 +78,6 @@ public class PlayerMarker : MonoBehaviour
 		switch (Target.tag) 
 		{
 		case "FieldZone":
-			if(Target.transform==this.transform.parent)
-			{
-				RevertMovement (this);
-			}
 			//Move marker or revert movement
 			Target.GetComponent<FieldZone>().AttachMarker(this);
 			break;
@@ -100,33 +95,6 @@ public class PlayerMarker : MonoBehaviour
 			//revert movement
 			break;
 		}
-		/*
-		if (Physics.Raycast (DropRay.origin,DropRay.direction*10, out Hit ))
-		{
-			if(Hit.collider.gameObject.tag =="FieldZone")
-			{
-				Debug.Log ("Zone Hit");
-				//place or placeback
-
-			}
-			else if(Hit.collider.gameObject.tag =="PMarker")
-			{
-				Debug.Log ("Marker Hit");
-				//swap
-			}
-			else if (Hit.collider.gameObject.tag =="TeamRooster")
-			{
-				Debug.Log ("WTF!");
-				//apply or switch
-			}
-			Debug.Log (Hit.collider.gameObject);
-		}
-		else
-		{
-			Debug.Log("Missed Ray");
-			ColliderSwitch();
-			//revert
-		}*/
 	}
 
 	//Atttach player to the marker
@@ -146,19 +114,5 @@ public class PlayerMarker : MonoBehaviour
 		this.LinkedPlayer = p.LinkedPlayer;
 		p.LinkedPlayer = TempSlot;
 		//!!!need to update jerseys
-	}
-
-	//Move marker to position where it was picked
-	public void RevertMovement( PlayerMarker p)
-	{
-		//place marker on last fitted position
-		p.transform.position = p.LastPosition.position;
-	}
-
-	public void Move()
-	{
-		//find new slot, place, rearrange other markers
-		//rearrange other markers in LaztZone
-	}
-
+	}	
 }

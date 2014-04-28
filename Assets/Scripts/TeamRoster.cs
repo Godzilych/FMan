@@ -21,9 +21,4 @@ public class TeamRoster : MonoBehaviour
 			item.transform.parent = gameObject.transform;
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

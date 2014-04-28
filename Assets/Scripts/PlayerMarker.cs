@@ -68,11 +68,7 @@ public class PlayerMarker : MonoBehaviour
 	void OnMouseUp()
 	{
 		SlotHighlight ();
-		/*
-		Ray DropRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit Hit;
-		Debug.DrawRay (DropRay.origin, DropRay.direction*10, Color.green, 5);
-		*/
+
 		GameObject Target = GetTarget ().collider.gameObject;
 
 		switch (Target.tag) 
@@ -84,15 +80,18 @@ public class PlayerMarker : MonoBehaviour
 		case "PlayerMarker":
 			//Swap linked players, revert movement
 			Swap (Target.GetComponent<PlayerMarker> ());
+			Revert ();
 
 			break;
 		case "TeamRoster":
 			//Link player to marker of switch two linked players
 			Apply (this, Target.GetComponent<FPlayer>());
+			Revert ();
 
 			break;
 		default:
 			//revert movement
+			Revert ();
 			break;
 		}
 	}
@@ -114,5 +113,11 @@ public class PlayerMarker : MonoBehaviour
 		this.LinkedPlayer = p.LinkedPlayer;
 		p.LinkedPlayer = TempSlot;
 		//!!!need to update jerseys
-	}	
+	}
+
+	//Revert movement
+	public void Revert()
+	{
+		transform.position=LastPosition;
+	}
 }

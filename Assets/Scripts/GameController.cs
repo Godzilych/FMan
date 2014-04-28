@@ -36,9 +36,7 @@ public class GameController : MonoBehaviour
 			p.transform.parent=Team.transform;
 			p.GetComponent<PlayerMarker>().Field=Field.GetComponent<SlotManager>();
 			TeamLineup.Add(p.GetComponent<PlayerMarker>());
-
 		}
-
 	}
 
 }

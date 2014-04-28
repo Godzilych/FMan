@@ -22,7 +22,7 @@ public class FieldZone : MonoBehaviour
 	{
 		if(this==p.myZone)
 		{
-			Revert (p);
+			p.Revert ();
 			return;
 		}
 
@@ -32,7 +32,7 @@ public class FieldZone : MonoBehaviour
 		{
 		case 0:
 			//no slots, revert
-			Revert (p);
+			p.Revert ();
 			Debug.Log ("no slots");
 			break;
 		case 1:
@@ -163,12 +163,5 @@ public class FieldZone : MonoBehaviour
 				break;
 			}
 		}
-	}
-
-	//revert marker drag
-	void Revert(PlayerMarker p)
-	{
-		Debug.Log ("go back");
-		p.transform.position = p.LastPosition;
 	}
 }

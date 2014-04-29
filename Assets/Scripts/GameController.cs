@@ -31,7 +31,7 @@ public class GameController : MonoBehaviour
 	{
 		for (int i=0; i < FieldPlayersCount; i++) 
 		{
-				//Инстанцируются маркеры
+			//Инстанцируются маркеры
 			GameObject p = Instantiate(PlayerMarkerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
 			p.transform.parent=Team.transform;
 			p.GetComponent<PlayerMarker>().Field=Field.GetComponent<SlotManager>();

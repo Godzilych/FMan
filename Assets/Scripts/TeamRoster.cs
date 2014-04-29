@@ -4,21 +4,20 @@ using System.Collections.Generic;
 
 public class TeamRoster : MonoBehaviour 
 {
-	public GameObject FPlayerPrefab;
-	public GameObject[] FPlayerList;
+	public int TeamSize;
 
-	public class Formation
-	{
-		public Dictionary<GameObject,GameObject> MarkerPositions;
-	}
-
+	public GameObject EntryPrefab;
+	public FPlayer FPlayerPrefab;
+	public FPlayer[] FPlayerList;
+	
 	// Use this for initialization
 	void Start () 
 	{
-		for(int i=0; i < FPlayerList.Length; i++)
+		for(int i=0; i < TeamSize; i++)
 		{
-			GameObject item = Instantiate( FPlayerPrefab) as GameObject;
-			item.transform.parent = gameObject.transform;
+			GameObject Entry = Instantiate(EntryPrefab,gameObject.transform.position+new Vector3(0,4-i/2.0f,0),Quaternion.identity) as GameObject;
+			Entry.transform.parent = gameObject.transform;
 		}
 	}
+
 }
